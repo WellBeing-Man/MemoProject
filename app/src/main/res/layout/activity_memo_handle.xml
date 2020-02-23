@@ -15,7 +15,8 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="제목을 입력하세요."
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:maxLength="10"/>
 
 
     <EditText
@@ -26,7 +27,9 @@
         android:ems="10"
         android:gravity="start|top"
         android:hint="본문을 입력하세요."
-        android:inputType="textMultiLine" />
+        android:inputType="textMultiLine"
+        android:maxLength="200"
+        android:maxLines="10"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -61,6 +64,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="갤러리" />
+
+            <Button
+                android:id="@+id/urlButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="URL" />
 
             <Button
                 android:id="@+id/delete"

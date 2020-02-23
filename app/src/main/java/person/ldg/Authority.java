@@ -1,24 +1,26 @@
-package person.ldg.util;
+package person.ldg;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-
+//권한 설정을 위한 클래스
 public class Authority extends AppCompatActivity {
     static final String TAG = "Authority";
+
+
+    public static String CONTENT="앱을 사용하기 위해서는 저장소, 카메라, 인터넷 접근 권한이 필요합니다.";
+
     private String[] requiredPermissions;
     private Context context;
     private Activity activity;
@@ -36,12 +38,15 @@ public class Authority extends AppCompatActivity {
         return requiredPermissions;
     }
 
-    public void setRequiredPermissions(String[] requiredPermissions) {
+    public void setRequiredPermissions(String[] requiredPermissions) {          /*Getter Setter*/
         this.requiredPermissions = requiredPermissions;
     }
 
+    public static void setCONTENT(String CONTENT) {
+        Authority.CONTENT = CONTENT;
+    }
 
-    public void excute(){
+    public void excute(){                                       //권한 설정묻는 다이얼로그 및 설정
         for(int i=0;i<requiredPermissions.length;i++){
             String[] perms={requiredPermissions[i]};
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -53,7 +58,7 @@ public class Authority extends AppCompatActivity {
                     ActivityCompat.requestPermissions(activity,perms,reqeustcode);
                 } else {
                     AlertDialog.Builder builder=new AlertDialog.Builder(context);
-                    builder.setTitle("앱을 사용하기 위해서는 저장소, 카메라 접근 권한이 필요합니다.");
+                    builder.setTitle(CONTENT);
                     builder.setMessage("설정 페이지로 이동하시겠습니까?");
                     builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
                         @Override
@@ -82,7 +87,7 @@ public class Authority extends AppCompatActivity {
         }
 
 
-    public int checker(){
+    public int checker(){                   //권한이 있는지 검사
         int returncode=UNAUTHORIZED;
         for(int i=0;i<requiredPermissions.length;i++) {
             if (ContextCompat.checkSelfPermission(context, requiredPermissions[i]) !=

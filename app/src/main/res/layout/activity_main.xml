@@ -24,13 +24,14 @@
             android:id="@+id/newMemo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New Memo" />
+            android:text="새 메모 작성하기"
+            />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/memoRecycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="9" />
 
 </LinearLayout>

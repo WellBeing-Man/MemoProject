@@ -35,12 +35,13 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.ViewHolder> {
         ImageView preImageView;
         TextView preTitleView;
         TextView preContentView;
+        TextView dateView;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             preImageView=itemView.findViewById(R.id.memoImageItem);
             preTitleView=itemView.findViewById(R.id.memoTitleItem);
             preContentView=itemView.findViewById(R.id.memoContentsItem);
-
+            dateView=itemView.findViewById(R.id.dateItem);
             itemView.setOnClickListener(new View.OnClickListener() {            //아이템 클릭시 상세보기로 넘어가기
                 @Override
                 public void onClick(View view) {                                //해당 아이템 클릭시 상세보기 액티비티로 인텐트 전달하면서 넘어감
@@ -74,17 +75,20 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.ViewHolder> {
         try {
             holder.preTitleView.setText(bindMemo.getName());
             holder.preContentView.setText(bindMemo.getContents());
+            holder.dateView.setText(bindMemo.getLatestModifieddate());
         }catch (NullPointerException e){
             e.printStackTrace();
         }
 
-                                      //메모에 이미지가 없으면 이미지뷰 없기
+                                                //메모에 이미지가 없으면 이미지뷰 없기
           try {
+              holder.preImageView.setVisibility(View.VISIBLE);
               Bitmap bitmap = BitmapFactory.decodeByteArray(bindMemo.getImageBytes()[0], 0, bindMemo.getOffset()[0]);
               holder.preImageView.setImageBitmap(bitmap);
 
           }catch (IndexOutOfBoundsException e){
               e.printStackTrace();
+              Log.d(TAG, "onBindViewHolder: HERE");
               holder.preImageView.setVisibility(View.INVISIBLE);
           }
 

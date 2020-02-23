@@ -6,7 +6,8 @@
     android:layout_height="wrap_content"
     android:gravity="bottom"
     android:orientation="vertical"
-    tools:context=".MemoHandle">
+    tools:context=".MemoHandle"
+    android:background="@drawable/wall">
 
 
     <EditText
@@ -16,7 +17,10 @@
         android:ems="10"
         android:hint="제목을 입력하세요."
         android:inputType="textPersonName"
-        android:maxLength="10"/>
+        android:maxLength="10"
+        android:fontFamily="@font/amsterdam"
+        android:textSize="30sp"
+        />
 
 
     <EditText
@@ -29,7 +33,9 @@
         android:hint="본문을 입력하세요."
         android:inputType="textMultiLine"
         android:maxLength="200"
-        android:maxLines="10"/>
+        android:maxLines="10"
+        android:fontFamily="@font/amsterdam"
+        android:textSize="15sp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -56,28 +62,32 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="카메라" />
+                android:text="카메라"
+                android:fontFamily="@font/amsterdam"/>
 
             <Button
                 android:id="@+id/gallery"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="갤러리" />
+                android:text="갤러리"
+                android:fontFamily="@font/amsterdam"/>
 
             <Button
                 android:id="@+id/urlButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="URL" />
+                android:text="URL"
+                android:fontFamily="@font/amsterdam"/>
 
             <Button
                 android:id="@+id/delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="삭제" />
+                android:text="사진 빼기"
+                android:fontFamily="@font/amsterdam"/>
         </LinearLayout>
 
     </LinearLayout>
@@ -86,6 +96,7 @@
         android:id="@+id/editComplete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="완료" />
+        android:text="다 쓰고 저장하기"
+        android:fontFamily="@font/amsterdam"/>
 
 </LinearLayout>

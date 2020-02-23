@@ -34,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Memo> memos;          //각 메모 객체 배열
 
+
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -75,6 +77,11 @@ public class MainActivity extends AppCompatActivity {
         memoAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
             }catch (NullPointerException e){
                 e.printStackTrace();
             }
+
         }
     }
 

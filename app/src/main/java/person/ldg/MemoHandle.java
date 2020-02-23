@@ -123,7 +123,7 @@ public class MemoHandle extends AppCompatActivity {
 
                 int position=imageAdapter.getImagePosition();               //클릭으로 선택된 이미지를 삭제
                 if (images.isEmpty() || position==-1){
-                    Toast.makeText(getApplicationContext(),"선택된 이미지가 없습니다.",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"삭제할 이미지를 선택해 주세요.",Toast.LENGTH_SHORT).show();
             } else{
                     images.remove(position);
                     imageAdapter.notifyDataSetChanged();
@@ -279,7 +279,7 @@ public class MemoHandle extends AppCompatActivity {
                     if(titleText.getText().toString().isEmpty()) {
                         Toast.makeText(getApplicationContext(), "제목을 입력하세요.", Toast.LENGTH_SHORT).show();
                     }else if(filelist.length==1 && isCorrection){         //인텐트로 전달 받은게 있으면 같은이름 파일 검사 안함
-                        Toast.makeText(getApplicationContext(),"같은 이름의 파일이 존재합니다.",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"같은 이름의 파일이 존재합니다. 다른 이름으로 지어주세요.",Toast.LENGTH_SHORT).show();
                     }else {
 
                         int byteArraySize=(images.size()/3)+1;

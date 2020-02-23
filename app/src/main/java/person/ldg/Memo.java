@@ -23,7 +23,10 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 
 class Memo implements Serializable{
@@ -34,6 +37,7 @@ class Memo implements Serializable{
     private String contents;
     private byte[][] imageBytes;
     private int[] offset;                  //바이트디코딩을 위한 오프셋
+    private String latestModifieddate;
 
     public Memo(String name, String contents, byte[][] imageBytes, int[] offset) {
         this.name = name;
@@ -81,8 +85,14 @@ class Memo implements Serializable{
         this.offset = offset;
     }
 
+    public String getLatestModifieddate() {
+        return latestModifieddate;
+    }
 
     public void storeFile(String fileDir){            //시리얼라이즈 해서 파일로 저장
+
+        SimpleDateFormat nowTime=new SimpleDateFormat("yyyy-MM-DD HH:mm");
+        latestModifieddate=nowTime.format(new Date(System.currentTimeMillis()));
 
         byte[] serializedMemo;
         String dirPath= fileDir;

@@ -2,37 +2,52 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/focus_background">
+    android:layout_height="100dp"
+    android:background="@drawable/focus_background"
+
+    android:orientation="horizontal">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="5"
         android:orientation="vertical"
-        android:layout_weight="7">
+        android:layout_gravity="center"
+        android:background="@drawable/wall"
+        >
 
         <TextView
-                android:id="@+id/memoTitleItem"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLength="15"
-                android:textSize="20sp" />
+            android:id="@+id/memoTitleItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLength="10"
+            android:textSize="25sp"
+            android:layout_weight="1"
+            android:fontFamily="@font/amsterdam"
+            />
 
         <TextView
-                android:id="@+id/memoContentsItem"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLength="30"
-                android:textSize="10sp" />
+            android:id="@+id/memoContentsItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLength="15"
+            android:layout_weight="1"
+            android:textSize="15sp"
+            android:fontFamily="@font/amsterdam"/>
+
+        <TextView
+            android:id="@+id/dateItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="8sp"
+            android:fontFamily="@font/amsterdam"/>
     </LinearLayout>
 
     <ImageView
-            android:id="@+id/memoImageItem"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
-            />
+        android:id="@+id/memoImageItem"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+         />
 
 </LinearLayout>

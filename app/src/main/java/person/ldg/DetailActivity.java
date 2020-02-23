@@ -29,6 +29,7 @@ public class DetailActivity extends AppCompatActivity {
 
     private TextView titleText;
     private TextView contentText;
+    private TextView modifiedText;
     private Button correctionButton;
     private Button deleteButton;
 
@@ -51,8 +52,10 @@ public class DetailActivity extends AppCompatActivity {
 
         titleText=findViewById(R.id.detail_ttitle_text);
         contentText=findViewById(R.id.content_on_detail);
+        modifiedText=findViewById(R.id.modifiedDateText);
         titleText.setText(memo.getName());
         contentText.setText(memo.getContents());
+        modifiedText.setText(memo.getLatestModifieddate().toString());
         correctionButton=findViewById(R.id.correctionButton);
         deleteButton=findViewById(R.id.memoDelete);
 

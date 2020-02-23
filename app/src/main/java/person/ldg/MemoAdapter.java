@@ -48,7 +48,7 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.ViewHolder> {
 
                         toDetail=new Intent(parentConext,DetailActivity.class);     //Serialize되어있어서 Parcelable이 안됨... 수동으로 보내기
                         toDetail.putExtra("MemoName",memotoSend.getName());
-
+                        toDetail.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         parentConext.startActivity(toDetail);
                 }
             });

@@ -83,7 +83,7 @@ public class DetailActivity extends AppCompatActivity {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(memo.delete()){
+                if(memo.delete(getFilesDir().getAbsolutePath())){
                     Toast.makeText(getApplicationContext(),"삭제 성공",Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(getApplicationContext(),"삭제 실패",Toast.LENGTH_SHORT).show();
@@ -120,7 +120,7 @@ public class DetailActivity extends AppCompatActivity {
 
     public void getMemo(String fileName) {                                //메모 파일 객체로 집어 넣기
 
-        String dirPath= Environment.getExternalStorageDirectory().getAbsolutePath()+"/WellBeing/";
+        String dirPath= getFilesDir().getAbsolutePath()+"/WellBeing/";
 
             try {
                 FileInputStream fileInputStream = new FileInputStream(new File(dirPath+fileName+".wbm"));

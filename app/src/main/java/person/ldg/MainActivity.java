@@ -27,9 +27,9 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView memoRecycler;
     private MemoAdapter memoAdapter;            //뷰 관련 오브젝트 선언
 
-    private  String[] requiredPermissions={Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE};  //권한 객체
+    private  String[] requiredPermissions={Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA,
+                                            Manifest.permission.INTERNET};  //권한 객체
     private int reqeustcode=200;
-    static final int UNAUTHORIZED=0;
     static final long serialVersionUID=321L;
 
     private ArrayList<Memo> memos;          //각 메모 객체 배열
@@ -66,13 +66,6 @@ public class MainActivity extends AppCompatActivity {
         memoAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        memos.clear();
-        getMemos();
-        memoAdapter.notifyDataSetChanged();
-    }
 
     @Override
     protected void onDestroy() {
@@ -100,10 +93,12 @@ public class MainActivity extends AppCompatActivity {
         memoAdapter.notifyDataSetChanged();                                     //Recycler뷰 관련 선언 및 초기화
 
 
-
-        if(authority.checker()==UNAUTHORIZED){                         //checker가 0이면 인증 진행
+        
+        if(authority.checker()==Authority.UNAUTHORIZED){                         //접근 권한 체크
+            Log.d(TAG, "onCreate1: NONONO");
             authority.excute();
         }else{
+            Log.d(TAG, "onCreate1: YES");
             getMemos();                                             //메모 객체 갱신
         }
 
@@ -121,32 +116,41 @@ public class MainActivity extends AppCompatActivity {
 
     public void getMemos() {                                //메모 파일 객체로 집어 넣기
 
-        String dirPath= Environment.getExternalStorageDirectory().getAbsolutePath()+"/WellBeing/";
-        File file=new File(dirPath);
-        String[] filelist=file.list(new FilenameFilter() {
-            @Override
-            public boolean accept(File file, String s) {
-                return s.endsWith("wbm");
-            }
-        });
+        String dirPath= getFilesDir().getAbsolutePath()+"/WellBeing/";
+        File file = new File(dirPath);
+        if(!file.exists()) {
+            file.mkdir();
+        }
+        Log.d(TAG, "getMemos: "+dirPath+file.exists());
+        String[] filelist = file.list(new FilenameFilter() {
+                @Override
+                public boolean accept(File file, String s) {
+                    return s.endsWith("wbm");
+                }
+            });
 
-        for(String filename:filelist){
             try {
-                 FileInputStream fileInputStream = new FileInputStream(new File(dirPath+filename));
-                 ObjectInputStream objectInputStream=new ObjectInputStream(fileInputStream);
-                 Memo readedMemo= new Memo();
-                 readedMemo=(Memo)objectInputStream.readObject();
-                 memos.add(readedMemo);
-                 readedMemo=null;
+                for (String filename : filelist) {
+                    try {
+                        FileInputStream fileInputStream = new FileInputStream(new File(dirPath + filename));
+                        ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+                        Memo readedMemo = new Memo();
+                        readedMemo = (Memo) objectInputStream.readObject();
+                        memos.add(readedMemo);
+                        readedMemo = null;
 
-            }catch (IOException e){
-                Log.e(TAG, "getMemos: "+"IO" );
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
+                    } catch (IOException e) {
+                        Log.e(TAG, "getMemos: " + "IO");
+                        e.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }catch (NullPointerException e){
                 e.printStackTrace();
             }
         }
     }
 
-}
+
 

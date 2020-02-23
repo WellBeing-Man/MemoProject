@@ -95,7 +95,8 @@ public class MemoHandle extends AppCompatActivity {
         Intent getFromdetail=getIntent();                   //메모 수정하러 들어왔을 시
         try {                                               //제목 수정 비활성
             setFromIntent(getFromdetail);
-            decodeByte();                                   //images객체에 Byte코드 디코드
+            decodeByte();       //images객체에 Byte코드 디코드
+            contentsTextWord=memo.getContents();
             titleText.setText(titleTextWord);
             titleText.setInputType(InputType.TYPE_NULL);
             contentsText.setText(contentsTextWord);
@@ -112,6 +113,7 @@ public class MemoHandle extends AppCompatActivity {
         LinearLayoutManager horizonlinearLayoutManager = new LinearLayoutManager(this);     //이미지 수평방향으로 추가
         horizonlinearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
         imageRecyler.setLayoutManager(horizonlinearLayoutManager);
+        imageAdapter.setDifaultPostions();
 
 
 
@@ -132,11 +134,12 @@ public class MemoHandle extends AppCompatActivity {
 
 
         authorityStorage= new Authority(storagePermissions,this,this,requestCode);      //갤러리 접근시 저장소 관련 퍼미션
-        if(authorityStorage.checker()==0){
+        if(authorityStorage.checker()==Authority.UNAUTHORIZED){
             gallery.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     authorityStorage.excute();
+
                 }
             });
         } else {
@@ -155,11 +158,12 @@ public class MemoHandle extends AppCompatActivity {
 
 
         authorityCam= new Authority(cameraPermissions,this,this,requestCode);           //카메라 권한 없으면 버튼 클릭시 다이얼로그 생성
-        if(authorityCam.checker()==0){
+        if(authorityCam.checker()==Authority.UNAUTHORIZED){
             camera.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     authorityCam.excute();
+
                 }
             });
         }
@@ -178,11 +182,12 @@ public class MemoHandle extends AppCompatActivity {
         }
 
         authorityInternet=new Authority(internetPermssions,getApplicationContext(),this,requestCode);       //인터넷 권한 없을시 다이얼로그 생성
-        if(authorityInternet.checker()==0){
+        if(authorityInternet.checker()==Authority.UNAUTHORIZED){
             url.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     authorityInternet.excute();
+
                 }
             });
 
@@ -258,9 +263,11 @@ public class MemoHandle extends AppCompatActivity {
                 titleTextWord=titleText.getText().toString();
                 contentsTextWord=contentsText.getText().toString();
 
-                String dirPath= Environment.getExternalStorageDirectory().getAbsolutePath()+"/WellBeing/";
+                String dirPath= getFilesDir().getAbsolutePath()+"/WellBeing/";
                 File file=new File(dirPath);                                            //디렉토리 검사
-
+                if(!file.exists()){
+                    file.mkdir();
+                }
                 String[] filelist=file.list(new FilenameFilter() {
                     @Override
                     public boolean accept(File file, String s) {
@@ -268,25 +275,31 @@ public class MemoHandle extends AppCompatActivity {
                     }
                 });                                                                 //파일 목록 받아와서 제목 검사
 
-                if(titleText.getText().toString().isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "제목을 입력하세요.", Toast.LENGTH_SHORT).show();
-                }else if(filelist.length==1 && isCorrection){         //인텐트로 전달 받은게 있으면 같은이름 파일 검사 안함
-                    Toast.makeText(getApplicationContext(),"같은 이름의 파일이 존재합니다.",Toast.LENGTH_SHORT).show();
-                }else {
+                try{
+                    if(titleText.getText().toString().isEmpty()) {
+                        Toast.makeText(getApplicationContext(), "제목을 입력하세요.", Toast.LENGTH_SHORT).show();
+                    }else if(filelist.length==1 && isCorrection){         //인텐트로 전달 받은게 있으면 같은이름 파일 검사 안함
+                        Toast.makeText(getApplicationContext(),"같은 이름의 파일이 존재합니다.",Toast.LENGTH_SHORT).show();
+                    }else {
 
-                    int byteArraySize=(images.size()/3)+1;
-                    byte[][] imageByte=new byte[byteArraySize][];
-                    imageByte=compressor(byteArraySize);
+                        int byteArraySize=(images.size()/3)+1;
+                        byte[][] imageByte=new byte[byteArraySize][];
+                        imageByte=compressor(byteArraySize);
 
-                    int[] array = new int[offsetArray.size()];      //ArrayList객체를 int[]로 바꿔줌
+                        int[] array = new int[offsetArray.size()];      //ArrayList객체를 int[]로 바꿔줌
 
-                    for (int i = 0; i < offsetArray.size(); i++) {
-                        array[i] = offsetArray.get(i).intValue();
+                        for (int i = 0; i < offsetArray.size(); i++) {
+                            array[i] = offsetArray.get(i).intValue();
+                        }
+
+                        memo = new Memo(titleTextWord, contentsTextWord,imageByte, array);      //데이터로 새로운 memo객체 생성 및 수정된 내용 저장
+                        memo.storeFile(dirPath);
+                        finish();
                     }
-                    memo = new Memo(titleTextWord, contentsTextWord,imageByte, array);      //데이터로 새로운 memo객체 생성 및 수정된 내용 저장
-                    memo.storeFile();
-                    finish();
+                }catch (NullPointerException e){
+                    e.printStackTrace();
                 }
+
             }
         });
 
@@ -295,7 +308,7 @@ public class MemoHandle extends AppCompatActivity {
     }
 
     private void setFromIntent(Intent getFromdetail) {                          //DetailActivity로부터 인텐트 전달 받아 전역 변수에 넣어줌
-        titleTextWord=getIntent().getStringExtra("MemoName");
+        titleTextWord=getFromdetail.getStringExtra("MemoName");
         getMemo(titleTextWord);
 
 
@@ -372,7 +385,7 @@ public class MemoHandle extends AppCompatActivity {
 
     public void getMemo(String fileName) {                                //메모 파일 객체로 집어 넣기
 
-        String dirPath= Environment.getExternalStorageDirectory().getAbsolutePath()+"/WellBeing/";
+        String dirPath= getFilesDir().getAbsolutePath()+"/WellBeing/";
 
         try {
             FileInputStream fileInputStream = new FileInputStream(new File(dirPath+fileName+".wbm"));

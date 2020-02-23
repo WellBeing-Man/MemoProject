@@ -53,10 +53,11 @@ public class Authority extends AppCompatActivity {
             if (ContextCompat.checkSelfPermission(context, requiredPermissions[i]) !=
                     PackageManager.PERMISSION_GRANTED) {
 
-                if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
+                     if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
                         requiredPermissions[i])) {
-                    ActivityCompat.requestPermissions(activity,perms,reqeustcode);
-                } else {
+                     ActivityCompat.requestPermissions(activity,perms,reqeustcode);
+
+                 } else {
                     AlertDialog.Builder builder=new AlertDialog.Builder(context);
                     builder.setTitle(CONTENT);
                     builder.setMessage("설정 페이지로 이동하시겠습니까?");
@@ -88,14 +89,11 @@ public class Authority extends AppCompatActivity {
 
 
     public int checker(){                   //권한이 있는지 검사
-        int returncode=UNAUTHORIZED;
+        int returncode=AUTHORIZED;
         for(int i=0;i<requiredPermissions.length;i++) {
             if (ContextCompat.checkSelfPermission(context, requiredPermissions[i]) !=
                     PackageManager.PERMISSION_GRANTED){
                     returncode =UNAUTHORIZED; }
-            else{
-                returncode=AUTHORIZED;
-            }
         }
         return returncode;
     }

@@ -1,6 +1,7 @@
 package person.ldg;
 
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Environment;
 import android.os.Parcel;
@@ -9,6 +10,7 @@ import android.util.Log;
 
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -80,10 +82,11 @@ class Memo implements Serializable{
     }
 
 
-    public void storeFile(){            //시리얼라이즈 해서 파일로 저장
+    public void storeFile(String fileDir){            //시리얼라이즈 해서 파일로 저장
 
         byte[] serializedMemo;
-        String dirPath= Environment.getExternalStorageDirectory().getAbsolutePath()+"/WellBeing/";
+        String dirPath= fileDir;
+        Log.d(TAG, "storeFile: "+dirPath);
         File dirFile=new File(dirPath);
         FileOutputStream saveFile=null;
         if(!dirFile.exists()){
@@ -109,9 +112,9 @@ class Memo implements Serializable{
         }
 
     }
-    public boolean delete(){
+    public boolean delete(String filePath){
 
-        String dirPath= Environment.getExternalStorageDirectory().getAbsolutePath()+"/WellBeing/";
+        String dirPath= filePath+"/WellBeing/";
         File dirFile=new File(dirPath);
         File a=new File(dirPath+name+".wbm");
         if(a.exists()){
